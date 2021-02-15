@@ -4,5 +4,4 @@ services:
   seafile:
     stdin_open: true
     tty: true
-    depends_on:
     entrypoint: ["/docker_entrypoint.sh", "init"]

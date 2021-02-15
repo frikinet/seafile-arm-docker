@@ -12,7 +12,7 @@ No guarantees of any kind are provided by using this environment.
 
 ## Prerequisites
 
-A functionnal docker-compose environment.
+A functional docker-compose environment.
 
 ## Initialization
 

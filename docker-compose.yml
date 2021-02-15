@@ -2,41 +2,15 @@ version: '3'
 
 services:
   seafile:
-    image: franchetti/seafile-arm
+    image: frikinet/seafile-arm
     restart: always
     environment:
-      - PUID=1000 # Same function as in the linuxserver images
-      - PGID=1000 # See https://github.com/linuxserver/docker-swag#user--group-identifiers
+      - PUID=1005 # Same function as in the linuxserver images
+      - PGID=1005 # See https://github.com/linuxserver/docker-swag#user--group-identifiers
     volumes:
       - ./seafile:/shared # <-- Permanent data are stored in the same folder as the compose file by default
     depends_on:
-      - db
-
-  db:
-    image: linuxserver/mariadb
-    restart: always
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - MYSQL_ROOT_PASSWORD=secret # <-- Choose a password for the root user
-      - TZ=Europe/Zurich #           <-- Change if needed
-    volumes:
-      - ./db:/config # <-- Permanent data are stored in the same folder as the compose file by default
-      
-  reverse-proxy:
-    image: linuxserver/swag
-    restart: always
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Zurich # <-- Change if needed
-      - URL=your.domain #  <-- Your domain
-      - VALIDATION=http
-    volumes:
-      - ./reverse-proxy:/config # <-- Permanent data are stored in the same folder as the compose file by default
-      - ./seafile:/shared # <-- Has to be the same volume as the seafile service
     ports:
-      - 443:443
-      - 80:80
+      - 8000:8000
+      - 8082:8082
+      - 8083:8083

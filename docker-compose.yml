@@ -9,7 +9,6 @@ services:
       - PGID=1005 # See https://github.com/linuxserver/docker-swag#user--group-identifiers
     volumes:
       - ./seafile:/shared # <-- Permanent data are stored in the same folder as the compose file by default
-    depends_on:
     ports:
       - 8000:8000
       - 8082:8082

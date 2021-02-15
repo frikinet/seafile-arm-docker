@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       - PUID=1005 # Same function as in the linuxserver images
-      - PGID=1005 # See https://github.com/linuxserver/docker-swag#user--group-identifiers
+      - PGID=1005
     volumes:
       - ./seafile:/shared # <-- Permanent data are stored in the same folder as the compose file by default
     ports:

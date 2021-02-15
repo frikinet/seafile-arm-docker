@@ -1,18 +1,18 @@
-# Seafile on ARM in 5 minutes
+# Minimal Seafile on ARM
 
-A docker-compose based deployment intended to bring seafile on any ARMv7/v8 board with little effort. A database server and a reverse-proxy with automated SSL certificate renewal are included.
+This repository is based in ChatDeBlofeld/seafile-arm-docker, which is a much complete deployment with a full SQL server and a reverse-proxy in the same device. ALL CREDITS AND THANKS TO ChatDeBlofeld FOR HIS WORK. Here I just have deleted all the unneeded configurations and files to have just a minimal installation of seafile with SQLITE for my own purposes.
+
+A minimal docker-compose based deployment intended to bring seafile on any ARMv7/v8 board with little effort. Just the bare minimum installation for a home seafile server with little users and an external Reverse Proxy in a different device (ej: HAPROXY).
 
 This environment has been set up using the following images and packages (which you should glance at for further documentation):
 
-- [Base Docker image]( https://github.com/ChatDeBlofeld/seafile-arm-docker-base )
-- [linuxserver/mariadb]( https://hub.docker.com/r/linuxserver/mariadb ) as database server
-- [linuxserver/swag]( https://github.com/linuxserver/docker-swag ) as reverse-proxy with cerbot support for _Let's Encrypt_.
+- [Base Docker image]( https://github.com/frikinet/seafile-arm-docker-base )
 
 No guarantees of any kind are provided by using this environment.
 
 ## Prerequisites
 
-A functionnal docker-compose environment, a domain name associated with your server and the ports 80 and 443 correctly forwarded. 
+A functionnal docker-compose environment.
 
 ## Initialization
 
@@ -111,15 +111,6 @@ Add the following lines (with your domain correctly set):
 FILE_SERVER_ROOT = 'https://your.domain/seafhttp'
 ```
 
-### Reverse-proxy configuration
-
-Copy the file `letsencrypt/seafile.conf` to `/path/to/reverse-proxy/volume/nginx/site-confs` and set your domain at the mentioned sections.
-
-See the following resources for more information about this configuration:
-
-- https://download.seafile.com/published/seafile-manual/deploy/deploy_with_nginx.md
-- https://download.seafile.com/published/seafile-manual/deploy/https_with_nginx.md
-
 ## Run
 
 Simply run:
@@ -128,15 +119,7 @@ Simply run:
 docker-compose up -d
 ```
 
-You should now be able to access `https://your.domain` and log in with your previously set admin account.
-
-## Updating
-
-### 7.1.4 -> 7.1.9
-
-- Stop the server.
-- Pull the new image
-- Restart the server.
+You should now be able to access `http://your-ip:your-port` and log in with your previously set admin account.
 
 ## Troubleshooting
 
@@ -150,22 +133,3 @@ If seahub did not start, try running new containers with `docker-compose up -d -
 
 It's also possible to set `daemon` to `False` in `gunicorn.conf.py` to grab more information about a failed start.
 
-### Database
-
-If the connection to the database server is refused when checking the root password (Errno 111), try waiting for a while (~5 minutes) until the server is fully started.
-
-### Test environment
-
-If you can't run the letsencrypt container yet (no port forwarding, no domain or whatever), you may want using the testing reverse-proxy. It's a simple Nginx configuration without SSL, just change the mentioned field in `nginx/seafile.conf` and the seafile configuration files for using the hostname of your server (probably 127.0.0.1).
-
-For initialization:
-
-```
-docker-compose -f docker-compose.yml -f docker-compose.testing.yml -f docker-compose.init.yml  run --rm seafile
-```
-
-For run:
-
-```
-docker-compose -f docker-compose.yml -f docker-compose.testing.yml up -d
-```
